@@ -1,0 +1,241 @@
+CREATE TABLE `cboh_init_log` (
+    `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+    `tenant_id` varchar(64) NOT NULL COMMENT '商户ID',
+    `brand_id` varchar(64) NOT NULL COMMENT '品牌ID',
+    `trigger_type` varchar(10) NOT NULL COMMENT '任务触发类型:MQ 消息触发 MANUAL 手动触发',
+    `order_no` tinyint(3) NOT NULL COMMENT '任务编号',
+    `order_des` varchar(30) NOT NULL COMMENT '任务描述',
+    `order_type` tinyint(2) NOT NULL COMMENT '任务状态:0未开始，1已完成，2失败',
+    `order_log` varchar(255) NOT NULL default '' COMMENT '任务执行日志记录描述',
+    `create_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `modified_time` datetime(0) NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '修改时间，用于记录重新触发情况',
+    PRIMARY KEY (`id`),
+    INDEX `idx_tenantid_brandid_orderno`(`tenant_id`, `brand_id`, `order_no`)
+);
+
+ALTER TABLE
+    `cboh_payment_3ch` DROP INDEX `uk_tenantId_vcode`,
+    DROP INDEX `idx_tenantId_id_vcode_state`;
+
+ALTER TABLE
+    `cboh_payment_3ch`
+ADD
+    UNIQUE INDEX `uk_tenantId_vcode_foodSign`(`tenant_id`, `code`, `food_sign`) USING BTREE,
+ADD
+    INDEX `idx_tenantId_id_vcode_state_foodSign`(
+        `tenant_id`,
+        `pk_id`,
+        `code`,
+        `enable_state`,
+        `food_sign`
+    ) USING BTREE;
+
+alter table
+    cboh_store_pos_3ch
+add
+    column device_type tinyint(3) default 0 comment '设备类型（0是pos 1是移动pos）';
+
+ALTER TABLE
+    `cboh_possecond_3ch`
+ADD
+    COLUMN `ticket_slot_id` bigint(20) NOT NULL default '' COMMENT '出票档口id';
+
+ALTER TABLE
+    `cboh_possecond_3ch`
+ADD
+    COLUMN `online_order_print` int(9) NOT NULL default 0 COMMENT '线上接单打印: 0否，1是';
+
+alter table
+    cboh_publisherror_3ch
+add
+    column data_package_version varchar(20) comment "生成包版本号";
+
+ALTER TABLE
+    `cboh_publishversion_3ch`
+MODIFY
+    COLUMN `version` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL COMMENT '主版本号'
+AFTER
+    `pk_store`;
+
+ALTER TABLE
+    `cboh_publishversion_3ch`
+ADD
+    INDEX `idx_tenant_store_version`(`tenant_id`, `pk_store`, `version`) USING BTREE;
+
+CREATE TABLE `cboh_data_packrecord_3ch` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '数据库自增主键',
+    `data_pack_id` char(36) DEFAULT NULL COMMENT '业务id',
+    `tenant_id` char(36) NOT NULL COMMENT '商户id',
+    `brand_id` char(36) DEFAULT NULL COMMENT '品牌id',
+    `version` bigint(20) DEFAULT NULL COMMENT '版本号',
+    `status` varchar(20) DEFAULT NULL COMMENT '数据包状态 init，sucess，fail',
+    `data_pack_name` varchar(100) DEFAULT NULL COMMENT '数据包名称',
+    `create_time` datetime DEFAULT NULL COMMENT '数据包生成日期',
+    `creator` varchar(20) DEFAULT NULL COMMENT '创建人',
+    `modifier` varchar(20) DEFAULT NULL COMMENT '修改人',
+    `modified_time` datetime DEFAULT NULL COMMENT '修改时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uiq_data_pack_id` (`data_pack_id`) USING BTREE,
+    KEY `idx_tenant` (`tenant_id`) USING BTREE,
+    KEY `idx_tenant_version` (`tenant_id`, `version`) USING BTREE
+) ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = '数据包生成记录主表';
+
+CREATE TABLE `cboh_data_packrecord_detail_3ch` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '数据库自增主键',
+    `tenant_id` char(36) NOT NULL COMMENT '商户id',
+    `brand_id` char(36) DEFAULT NULL COMMENT '品牌id',
+    `data_pack_detail_id` char(36) DEFAULT NULL COMMENT '业务id',
+    `data_pack_id` char(36) DEFAULT NULL COMMENT '主表id',
+    `data_type` varbinary(50) DEFAULT NULL COMMENT '数据类型（例如商户数据，菜单数据）',
+    `data_id` char(36) DEFAULT NULL COMMENT '数据id（例如菜单id）',
+    `store_ids` varchar(5000) DEFAULT NULL COMMENT '门店id列表',
+    `file_id` char(36) DEFAULT NULL COMMENT '文件id',
+    `sub_version` varchar(30) DEFAULT NULL COMMENT '子版本号',
+    `main_version` varchar(30) DEFAULT NULL COMMENT '主版本号',
+    `message` varchar(255) DEFAULT NULL COMMENT '错误信息',
+    PRIMARY KEY (`id`),
+    KEY `idx_data_pack_id` (`data_pack_id`) USING BTREE
+) ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = '数据包生成记录子表';
+
+CREATE TABLE `cboh_data_packrecord_file_3ch` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+    `tenant_id` char(36) NOT NULL COMMENT '商户id',
+    `brand_id` char(36) DEFAULT NULL COMMENT '品牌id',
+    `file_id` char(36) DEFAULT NULL COMMENT '文件id',
+    `oss_url` varchar(500) DEFAULT NULL COMMENT 'oss文件地址',
+    `file_create_time` datetime DEFAULT NULL COMMENT '文件生成时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = '生成文件记录表';
+
+CREATE TABLE `store_using_version` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '数据库自增主键',
+    `tenant_id` char(36) NOT NULL COMMENT '商户id',
+    `brand_id` char(36) DEFAULT NULL COMMENT '品牌id',
+    `business_id` char(36) DEFAULT NULL COMMENT '业务id',
+    `store_id` char(36) DEFAULT NULL COMMENT '门店id',
+    `main_version` varchar(30) DEFAULT NULL COMMENT '门店正在使用的主版本号',
+    `creator` varchar(20) DEFAULT NULL COMMENT '创建人',
+    `create_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '创建时间',
+    `modifier` varchar(20) DEFAULT NULL COMMENT '修改人',
+    `modified_time` datetime DEFAULT NULL COMMENT '修改时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uniq_tenant_store` (`tenant_id`, `store_id`) USING BTREE
+) ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = '记录门店正在使用的版本';
+
+CREATE TABLE `store_latest_version` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增id',
+    `tenant_id` char(36) NOT NULL COMMENT '商户id',
+    `brand_id` char(36) DEFAULT NULL COMMENT '品牌id',
+    `store_id` char(36) DEFAULT NULL COMMENT '门店id',
+    `version` varchar(30) DEFAULT NULL COMMENT '门店最新下发的版本',
+    `creator` varchar(20) DEFAULT NULL COMMENT '创建人',
+    `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+    `modifier` varchar(20) DEFAULT NULL COMMENT '修改人',
+    `modified_time` datetime DEFAULT NULL COMMENT '修改时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `uniq_tenant_store` (`tenant_id`, `store_id`) USING BTREE
+) ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = '门店最新下发版本';
+
+CREATE TABLE `ticket_slot` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+    `tenant_id` char(36) NOT NULL COMMENT '商户id',
+    `brand_id` char(36) DEFAULT NULL COMMENT '品牌id',
+    `store_id` char(36) DEFAULT NULL COMMENT '门店id',
+    `ticket_slot_name` varchar(60) DEFAULT NULL COMMENT '出票档口名称',
+    `ticket_slot_code` varchar(60) DEFAULT NULL COMMENT '出票档口编码',
+    `ticket_slot_type` varchar(30) DEFAULT NULL COMMENT '出票档口类型，1 后厨；2 前厅',
+    `is_area_print` int(2) DEFAULT NULL COMMENT '是否分区域打印;1 分区域；0不分区域',
+    `area_id` varchar(1000) DEFAULT NULL COMMENT '区域id，可以多选，逗号隔开',
+    `status` int(2) DEFAULT NULL COMMENT '状态 0 停用；1启用',
+    `is_delete` int(2) DEFAULT '0' COMMENT '作废标志',
+    `creator` char(36) DEFAULT NULL COMMENT '创建人',
+    `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+    `modifier` char(36) DEFAULT NULL COMMENT '修改人',
+    `modified_time` datetime DEFAULT NULL COMMENT '修改时间',
+    PRIMARY KEY (`id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = '出票档口主表';
+
+CREATE TABLE `ticket_slot_detail` (
+    `id` bigint(20) NOT NULL AUTO_INCREMENT COMMENT '自增主键',
+    `tenant_id` char(36) NOT NULL COMMENT '商户id',
+    `brand_id` char(36) DEFAULT NULL COMMENT '品牌id',
+    `ticket_slot_id` bigint(20) DEFAULT NULL COMMENT '出票档口主表id',
+    `config_type` varchar(30) DEFAULT NULL COMMENT '配置类别（制作单 转台单 退菜单 等等）',
+    `config_type_code` char(36) DEFAULT NULL COMMENT '配置编码',
+    `config_type_value` char(36) DEFAULT NULL COMMENT '配置值',
+    `is_delete` int(2) DEFAULT '0' COMMENT '作废标志',
+    `creator` char(36) DEFAULT NULL COMMENT '创建人',
+    `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+    `modifier` char(36) DEFAULT NULL COMMENT '修改人',
+    `modified_time` datetime DEFAULT NULL COMMENT '修改时间',
+    PRIMARY KEY (`id`),
+    KEY `idx_slot_id` (`ticket_slot_id`) USING BTREE
+) ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = '出票档口明细表';
+
+CREATE TABLE `pos_config_diff_data` (
+    `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+    `merchant_id` varchar(64) NOT NULL COMMENT '商户ID',
+    `brand_id` varchar(64) NOT NULL COMMENT '品牌ID',
+    `store_id` varchar(64) NOT NULL COMMENT '门店ID',
+    `pos_code` varchar(64) NOT NULL COMMENT 'POS编码',
+    `config_type` varchar(64) NOT NULL COMMENT '配置类型',
+    `industry_mode` varchar(64) NOT NULL COMMENT '行业模式',
+    `key` varchar(64) NOT NULL COMMENT '数据项编码',
+    `indi_value` varchar(1000) DEFAULT NULL COMMENT '数据项值',
+    `user_id` varchar(64) NOT NULL COMMENT '修改人',
+    `indi_version` bigint(19) NOT NULL COMMENT '版本号',
+    `state` char(1) NOT NULL COMMENT '数据状态',
+    `gmt_create` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `gmt_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    KEY `idx_diff_merchant_st_pos_type` (
+        `merchant_id`,
+        `store_id`,
+        `pos_code`,
+        `config_type`,
+        `industry_mode`
+    ),
+    KEY `idx_diff_merchant_br_st_pos_type` (
+        `merchant_id`,
+        `brand_id`,
+        `store_id`,
+        `pos_code`,
+        `config_type`,
+        `industry_mode`
+    )
+) ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = '商户差异数据';
+
+CREATE TABLE `pos_config_indicator` (
+    `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+    `key` varchar(64) NOT NULL COMMENT '项目编码',
+    `label` varchar(128) NOT NULL COMMENT '项目名称',
+    `show_type` varchar(32) NOT NULL COMMENT '数据项展示类型',
+    `component_props` varchar(3000) DEFAULT NULL COMMENT '数据项校验规则',
+    `data_source` varchar(8000) DEFAULT NULL COMMENT '数据项预置数据',
+    `default_value` varchar(1000) DEFAULT NULL COMMENT '默认值',
+    `description` varchar(255) DEFAULT NULL COMMENT '数据项描述',
+    `gmt_create` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `gmt_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '修改时间',
+    PRIMARY KEY (`id`),
+    UNIQUE KEY `idx_pos_config_key` (`key`) USING BTREE
+) ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = '数据项模版';
+
+CREATE TABLE `pos_config_mode` (
+    `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+    `config_type` varchar(64) NOT NULL COMMENT '配置类型',
+    `industry_mode` varchar(64) NOT NULL COMMENT '行业模式',
+    `group_key` varchar(64) NOT NULL COMMENT '项目组编码',
+    `group_name` varchar(128) DEFAULT NULL COMMENT '项目组名称',
+    `group_sort` int(10) NOT NULL COMMENT '项目组排序',
+    `key` varchar(64) NOT NULL COMMENT '项目编码',
+    `label` varchar(128) NOT NULL COMMENT '数据项名称',
+    `sort` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '项目排序',
+    `show_detail` char(1) NOT NULL DEFAULT 'Y' COMMENT '是否展示组明细',
+    `show_group` char(1) NOT NULL DEFAULT 'Y' COMMENT '是否显示组',
+    `group_description` varchar(255) DEFAULT NULL COMMENT '组描述',
+    `indi_version` bigint(19) NOT NULL COMMENT '版本号',
+    `gmt_create` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
+    `gmt_modified` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '更新时间',
+    PRIMARY KEY (`id`),
+    KEY `idx_config_type_industry` (`config_type`, `industry_mode`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8 COMMENT = '配置模式';
