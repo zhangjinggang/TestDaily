@@ -5,7 +5,7 @@
         "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 
 <generatorConfiguration>
-    <properties resource="db-config.properties"/>
+    <properties resource="config.properties"/>
 
     <context id="Mysql" targetRuntime="MyBatis3" defaultModelType="flat">
 
@@ -46,11 +46,12 @@
         <!-- 生成 DO 的 Builder -->
         <plugin type="com.itfsw.mybatis.generator.plugins.ModelBuilderPlugin"/>
 
-        <!-- 生成 Repository 文件 会覆盖原有的repository-->
+        <!-- 生成 Repository 文件 -->
         <plugin type="com.jichaowu.mybatis.generator.plugins.RepositoryGeneratorPlugin">
-            <property name="targetPackage" value="com.zjg.dao.respository"/>
+            <property name="targetPackage" value="com.zjg.dao.repository"/>
             <property name="targetProject" value="../TestDaily-dao/src/main/java"/>
         </plugin>
+
 
         <commentGenerator>
             <property name="suppressAllComments" value="false"/>
@@ -71,21 +72,19 @@
 
         <javaClientGenerator targetPackage="com.zjg.dao.mapper"
                              targetProject="../TestDaily-dao/src/main/java"
-                             implementationPackage="TestDaily-dao.zjg.dao.mapper"
+                             implementationPackage="com.zjg.dao.mapper"
                              type="XMLMAPPER"/>
 
         <!--默认值参见 TableConfiguration.class - public TableConfiguration(Context context)-->
         <!--<columnOverride column="class" property="classOverride"/>  字段修改-->
         <!--<ignoreColumn column="class"/>  字段忽略 -->
         <!--<generatedKey column="id" sqlStatement="JDBC" identity="true"/>  返回主键-->
-        <table tableName="business"
-               domainObjectName="BusinessDO"
-               mapperName="BusinessDAO"/>
-
         <table tableName="device"
-               domainObjectName="DeviceDO"
-               mapperName="DeviceDAO"/>
-
+               domainObjectName="deviceDO"
+               mapperName="deviceDAO"/>
+        <table tableName="business"
+               domainObjectName="businessDO"
+               mapperName="businessDAO"/>
 
     </context>
 </generatorConfiguration>

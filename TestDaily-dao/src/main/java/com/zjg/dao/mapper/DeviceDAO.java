@@ -1,6 +1,6 @@
 package com.zjg.dao.mapper;
 
-import com.zjg.dao.mapper.base.BaseDeviceDAO;
+import com.zjg.dao.mapper.base.BasedeviceDAO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -8,5 +8,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @author Thinkpad
  */
 @Mapper
-public interface DeviceDAO extends BaseDeviceDAO {
+public interface deviceDAO extends BasedeviceDAO {
 }

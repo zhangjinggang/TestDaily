@@ -1,6 +1,6 @@
 package com.zjg.dao.mapper;
 
-import com.zjg.dao.mapper.base.BaseBusinessDAO;
+import com.zjg.dao.mapper.base.BasebusinessDAO;
 import org.apache.ibatis.annotations.Mapper;
 
 /**
@@ -8,5 +8,5 @@ import org.apache.ibatis.annotations.Mapper;
  * @author Thinkpad
  */
 @Mapper
-public interface BusinessDAO extends BaseBusinessDAO {
+public interface businessDAO extends BasebusinessDAO {
 }
