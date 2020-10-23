@@ -6,7 +6,11 @@
 
     <groupId>com.zjg.test</groupId>
     <artifactId>TestDaily</artifactId>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>TestDaily-dao</module>
+    </modules>
 
     <parent>
         <groupId>org.springframework.boot</groupId>
@@ -31,8 +35,6 @@
     <build>
 
         <plugins>
-
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

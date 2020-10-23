@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="db-config.properties"/>
+
+    <context id="Mysql" targetRuntime="MyBatis3" defaultModelType="flat">
+
+        <!-- byExample 重命名为 byParam -->
+        <plugin type="com.jichaowu.mybatis.generator.plugins.MyBatisGeneratorDaoNamePlugin" />
+
+        <!-- Mapper 直接覆盖, 不合并 -->
+        <plugin type="org.mybatis.generator.plugins.UnmergeableXmlMappersPlugin" />
+
+        <!-- Mapper 添加 @Mapper 注解 -->
+        <plugin type="org.mybatis.generator.plugins.MapperAnnotationPlugin" />
+
+        <!-- Mapper 增加 selectOneByExample -->
+        <plugin type="com.itfsw.mybatis.generator.plugins.SelectOneByExamplePlugin"/>
+
+        <!-- Mapper 增加 batchInsert -->
+        <plugin type="com.jichaowu.mybatis.generator.plugins.BatchInsertPlugin"/>
+
+        <!-- MySQL分页插件 -->
+        <plugin type="com.itfsw.mybatis.generator.plugins.LimitPlugin">
+            <!-- 通过配置startPage影响Example中的page方法开始分页的页码，默认分页从0开始 -->
+            <property name="startPage" value="0"/>
+        </plugin>
+
+        <!-- 支持 select for update (必须在LimitPlugin后面使用)-->
+        <!--<plugin type="com.jichaowu.mybatis.generator.plugins.ForUpdatePlugin" />-->
+
+        <!-- Mapper 生成两套, XxxMapper 和 BaseMapper,  XxxMapper 继承 BaseMapper -->
+        <!-- BaseMapper 自动生成不可修改, XxxMapper 里添加一些自定义sql -->
+        <plugin type="com.jichaowu.mybatis.generator.plugins.BaseMapperPlugin">
+            <!-- 是否添加 @Mapper 注解 -->
+            <property name="annotation" value="true"/>
+        </plugin>
+
+        <!-- DO 生成 toString 方法 -->
+        <plugin type="org.mybatis.generator.plugins.ToStringPlugin" />
+
+        <!-- 生成 DO 的 Builder -->
+        <plugin type="com.itfsw.mybatis.generator.plugins.ModelBuilderPlugin"/>
+
+        <!-- 生成 Repository 文件 会覆盖原有的repository-->
+        <plugin type="com.jichaowu.mybatis.generator.plugins.RepositoryGeneratorPlugin">
+            <property name="targetPackage" value="com.zjg.dao.respository"/>
+            <property name="targetProject" value="../TestDaily-dao/src/main/java"/>
+        </plugin>
+
+        <commentGenerator>
+            <property name="suppressAllComments" value="false"/>
+            <property name="suppressDate" value="true"/>
+            <property name="addRemarkComments" value="true"/>
+        </commentGenerator>
+
+        <jdbcConnection driverClass="${jdbc.driverClass}"
+                        connectionURL="${jdbc.url}"
+                        userId="${jdbc.user}"
+                        password="${jdbc.password}">
+        </jdbcConnection>
+
+        <javaModelGenerator targetPackage="com.zjg.dao.model"
+                            targetProject="../TestDaily-dao/src/main/java"/>
+
+        <sqlMapGenerator targetPackage="mapper" targetProject="../TestDaily-dao/src/main/resources"/>
+
+        <javaClientGenerator targetPackage="com.zjg.dao.mapper"
+                             targetProject="../TestDaily-dao/src/main/java"
+                             implementationPackage="TestDaily-dao.zjg.dao.mapper"
+                             type="XMLMAPPER"/>
+
+        <!--默认值参见 TableConfiguration.class - public TableConfiguration(Context context)-->
+        <!--<columnOverride column="class" property="classOverride"/>  字段修改-->
+        <!--<ignoreColumn column="class"/>  字段忽略 -->
+        <!--<generatedKey column="id" sqlStatement="JDBC" identity="true"/>  返回主键-->
+        <table tableName="business"
+               domainObjectName="BusinessDO"
+               mapperName="BusinessDAO"/>
+
+        <table tableName="device"
+               domainObjectName="DeviceDO"
+               mapperName="DeviceDAO"/>
+
+
+    </context>
+</generatorConfiguration>
