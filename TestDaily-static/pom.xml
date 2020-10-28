@@ -11,5 +11,11 @@
 
     <artifactId>TestDaily-static</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.zjg.test</groupId>
+            <artifactId>TestDaily-controller</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>

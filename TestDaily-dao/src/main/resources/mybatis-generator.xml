@@ -80,11 +80,11 @@
         <!--<ignoreColumn column="class"/>  字段忽略 -->
         <!--<generatedKey column="id" sqlStatement="JDBC" identity="true"/>  返回主键-->
         <table tableName="device"
-               domainObjectName="deviceDO"
-               mapperName="deviceDAO"/>
+               domainObjectName="DeviceDO"
+               mapperName="DeviceDAO"/>
         <table tableName="business"
-               domainObjectName="businessDO"
-               mapperName="businessDAO"/>
+               domainObjectName="BusinessDO"
+               mapperName="BusinessDAO"/>
 
     </context>
 </generatorConfiguration>

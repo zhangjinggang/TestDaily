@@ -11,5 +11,20 @@
 
     <artifactId>TestDaily-controller</artifactId>
 
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.zjg.test</groupId>
+            <artifactId>TestDaily-dao</artifactId>
+        </dependency>
+    </dependencies>
+
 
 </project>

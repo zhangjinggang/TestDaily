@@ -1,6 +1,6 @@
 package com.zjg.dao.repository;
 
-import com.zjg.dao.mapper.businessDAO;
+import com.zjg.dao.mapper.BusinessDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
  * @author Thinkpad
  */
 @Repository
-public class businessRepository {
+public class BusinessRepository {
     @Autowired
-    private businessDAO businessDAO;
+    private BusinessDAO businessDAO;
 }
