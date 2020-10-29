@@ -31,7 +31,7 @@ import java.util.Optional;
 
 /**
   * @description: BeanDefinitionRegistry的后处理器  用来注册额外的BeanDefinition
- * 经常被用来注册BeanFactoryPostProcessor的BeanDefinition。
+  * 经常被用来注册BeanFactoryPostProcessor的BeanDefinition。
   * @author zjg
   * @date 2020/5/2 19:03
   */

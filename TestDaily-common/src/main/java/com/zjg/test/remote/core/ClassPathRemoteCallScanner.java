@@ -67,14 +67,14 @@ public class ClassPathRemoteCallScanner extends ClassPathBeanDefinitionScanner i
     private void processBeanDefinitions(GenericBeanDefinition definition, AnnotationMetadata metadata) {
         String beanClassName = definition.getBeanClassName();
         if (!StringUtils.isEmpty(beanClassName)) {
+            definition.setBeanClass(this.remoteFactoryBeanClass);
             //创建FactoryBean需要在构造方法中指定class参数
             definition.getConstructorArgumentValues().addGenericArgumentValue(beanClassName);
-            definition.setBeanClass(this.remoteFactoryBeanClass);
             Map<String, Object> attributesMap = metadata.getAnnotationAttributes(RemoteServer.class.getName());
             if (!CollectionUtils.isEmpty(attributesMap) && null != attributesMap.get("serverName")) {
                 String remoteServerName = String.valueOf(attributesMap.get("serverName"));
                 if (!StringUtils.isEmpty(remoteServerName)) {
-                    //指定MapperFactoryBean的dataSource参属性值
+                    //指定MapperFactoryBean的remoteServerName属性值
                     definition.getPropertyValues().add("remoteServerName", remoteServerName);
                 }
 

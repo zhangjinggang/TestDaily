@@ -25,6 +25,8 @@ import java.util.stream.Collectors;
   * @description: ImportBeanDefinitionRegistrar在ConfigurationClassPostProcessor
   * 处理Configuration类期间被调用，用来生成该Configuration类所需要的BeanDefinition。
   * 而ConfigurationClassPostProcessor正实现了BeanDefinitionRegistryPostProcessor接口
+ *
+ * spring启动我们自定义注册的入口
   * @author zjg
   * @date 2020/6/28 19:06
   */
@@ -38,6 +40,8 @@ public class RemoteCallPackageRegistrar implements ImportBeanDefinitionRegistrar
 
     /**
      * AnnotationMetadata 表示当前被@Import注解给标注的所有注解信息
+     * 主要就是向spring中注入了一个RemoteCallScannerConfigurer的beanDefinition，对象名可以自己命名，
+     * 在后面RemoteCallScannerConfigurer类执行初始化的时候用到，主要是解析占位符
      */
     @Override
     public void registerBeanDefinitions(AnnotationMetadata importingClassMetadata, BeanDefinitionRegistry registry) {
@@ -62,7 +66,8 @@ public class RemoteCallPackageRegistrar implements ImportBeanDefinitionRegistrar
     }
 
     private static String generateBaseBeanName(AnnotationMetadata importingClassMetadata, int index) {
-        return importingClassMetadata.getClassName() + "#" + RemoteCallPackageRegistrar.class.getSimpleName() + "#" + index;
+        String str = importingClassMetadata.getClassName() + "#" + RemoteCallScannerConfigurer.class.getSimpleName() + "#" + index;
+        return str;
     }
 
 }
