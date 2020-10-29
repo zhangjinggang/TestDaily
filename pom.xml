@@ -12,6 +12,8 @@
         <module>TestDaily-dao</module>
         <module>TestDaily-static</module>
         <module>TestDaily-controller</module>
+        <module>TestDaily-common</module>
+        <module>Testdaily-service</module>
     </modules>
 
     <parent>
@@ -23,36 +25,45 @@
 
     <properties>
         <test-daily.version>1.0-SNAPSHOT</test-daily.version>
+        <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
     </properties>
 
 
     <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>com.alibaba</groupId>
-                <artifactId>fastjson</artifactId>
-                <version>1.2.41</version>
-            </dependency>
-            <dependency>
-                <groupId>com.zjg.test</groupId>
-                <artifactId>TestDaily-dao</artifactId>
-                <version>${test-daily.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.zjg.test</groupId>
-                <artifactId>TestDaily-controller</artifactId>
-                <version>${test-daily.version}</version>
-            </dependency>
-            <dependency>
-                <groupId>com.zjg.test</groupId>
-                <artifactId>TestDaily-static</artifactId>
-                <version>${test-daily.version}</version>
-            </dependency>
-        </dependencies>
     </dependencyManagement>
 
 
-
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-dependencies</artifactId>
+            <version>${spring-boot.version}</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.29</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.41</version>
+        </dependency>
+    </dependencies>
 
     <build>
 

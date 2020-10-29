@@ -9,14 +9,12 @@
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <artifactId>TestDaily-static</artifactId>
+    <artifactId>TestDaily-common</artifactId>
 
     <dependencies>
         <dependency>
-            <groupId>com.zjg.test</groupId>
-            <artifactId>TestDaily-controller</artifactId>
-            <version>${test-daily.version}</version>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-autoconfigure</artifactId>
         </dependency>
     </dependencies>
-
 </project>

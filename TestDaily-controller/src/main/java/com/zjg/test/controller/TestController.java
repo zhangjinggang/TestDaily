@@ -1,4 +1,4 @@
-package com.zjg.controller;
+package com.zjg.test.controller;
 
 import com.alibaba.fastjson.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;

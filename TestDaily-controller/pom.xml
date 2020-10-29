@@ -13,16 +13,9 @@
 
     <dependencies>
         <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.zjg.test</groupId>
-            <artifactId>TestDaily-dao</artifactId>
+            <artifactId>Testdaily-service</artifactId>
+            <version>${test-daily.version}</version>
         </dependency>
     </dependencies>
 
