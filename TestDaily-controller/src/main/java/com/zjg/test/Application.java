@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 //zjgtodo 扫描包
 @SpringBootApplication(scanBasePackages = {"com.zjg"})
 @MapperScan(basePackages = "com.zjg.dao")
-@RemoteCallScan(basePackages = {"com.zjg.test.service"})
+@RemoteCallScan(basePackages = {"com.zjg.test.service.remote"})
 public class Application {
     public static void main(String[] args) throws Exception {
     SpringApplication.run(Application.class, args);
