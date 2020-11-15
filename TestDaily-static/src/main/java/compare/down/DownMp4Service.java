@@ -5,15 +5,18 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.channels.FileChannel;
 
-public class DownMp4 {
+public class DownMp4Service {
 
-    public static String TEMP_DIR = "F:\\temp";
-    public static String DES_PATH = "";
-    public static int connTimeout = 5 * 1000;
-    public static int readTimeout = 30 * 1000;
-    public static String s1 = "https://cdn.cangtianbfq.com/2020/11/14/FiiMIIQ6UQPxPN5h/playlist.m3u8";
+    public  String TEMP_DIR = "";
+    public  String DES_PATH = "";
+    public  int connTimeout = 10 * 1000;
+    public  int readTimeout = 60 * 1000;
+    public  String s1 = "https://cdn.cangtianbfq.com/2020/11/14/FiiMIIQ6UQPxPN5h/playlist.m3u8";
 
-    public static void start() {
+    public  void start(String m3u8,String DES_PATH,String TEMP_DIR) {
+        this.s1 = m3u8;
+        this.DES_PATH = DES_PATH;
+        this.TEMP_DIR = TEMP_DIR;
         File tfile = new File(TEMP_DIR);
         if (!tfile.exists()) {
             tfile.mkdirs();
@@ -57,8 +60,13 @@ public class DownMp4 {
         System.out.println("文件下载完毕!");
         mergeFiles(tfile.listFiles(), DES_PATH);
         tfile.delete();
+        File pan = new File(DES_PATH.substring(0,DES_PATH.indexOf("\\")));
+        long freeSpace = pan.getFreeSpace();
+        if(freeSpace / 1024 / 1024 / 1024 <4){
+            Thread.currentThread().stop();
+        }
     }
-    public static M3U8 getM3U8ByURL(String m3u8URL) {
+    public M3U8 getM3U8ByURL(String m3u8URL) {
         try {
             HttpURLConnection conn = (HttpURLConnection) new URL(m3u8URL).openConnection();
             if (conn.getResponseCode() == 200) {
@@ -102,7 +110,7 @@ public class DownMp4 {
         }
         return null;
     }
-    public static boolean mergeFiles(File[] fpaths, String resultPath) {
+    public  boolean mergeFiles(File[] fpaths, String resultPath) {
         if (fpaths == null || fpaths.length < 1) {
             return false;
         }
@@ -135,9 +143,9 @@ public class DownMp4 {
             return false;
         }
 
-        // for (int i = 0; i < fpaths.length; i ++) {
-        // fpaths[i].delete();
-        // }
+         for (int i = 0; i < fpaths.length; i ++) {
+            fpaths[i].delete();
+         }
 
         return true;
     }
