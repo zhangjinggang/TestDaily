@@ -1,6 +1,7 @@
 package com.zjg.dao.repository;
 
 import com.zjg.dao.mapper.DeviceDAO;
+import com.zjg.dao.model.DeviceDO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -12,4 +13,8 @@ import org.springframework.stereotype.Repository;
 public class DeviceRepository {
     @Autowired
     private DeviceDAO deviceDAO;
+
+    public void addDevice(DeviceDO deviceDO){
+        deviceDAO.insert(deviceDO);
+    }
 }
