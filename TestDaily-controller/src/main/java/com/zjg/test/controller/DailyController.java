@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("dayliy")
-public class DayliyController {
+public class DailyController {
 
 
     @Autowired
@@ -22,7 +22,7 @@ public class DayliyController {
     @RequestMapping("testDataBaseRollBack")
     public String testDataBaseRollBack(){
         DeviceDO deviceDO = new DeviceDO();
-        deviceDO.setAuthCode("11111111111111");
+        deviceDO.setAuthCode("222");
         deviceRepository.addDevice(deviceDO);
         return "success";
     }
