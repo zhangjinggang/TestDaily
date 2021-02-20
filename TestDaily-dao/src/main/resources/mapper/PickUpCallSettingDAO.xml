@@ -1,0 +1,317 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zjg.dao.mapper.PickUpCallSettingDAO">
+  <resultMap id="BaseResultMap" type="com.zjg.dao.model.PickUpCallSettingDO">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="brand_identy" jdbcType="BIGINT" property="brandIdenty" />
+    <result column="shop_identy" jdbcType="BIGINT" property="shopIdenty" />
+    <result column="voice_announce_num" jdbcType="INTEGER" property="voiceAnnounceNum" />
+    <result column="pick_up_meal_place" jdbcType="INTEGER" property="pickUpMealPlace" />
+    <result column="notify_type" jdbcType="VARCHAR" property="notifyType" />
+    <result column="expire_auto_pick_up_enable" jdbcType="TINYINT" property="expireAutoPickUpEnable" />
+    <result column="expire_auto_pick_up_seconds" jdbcType="BIGINT" property="expireAutoPickUpSeconds" />
+    <result column="server_create_time" jdbcType="TIMESTAMP" property="serverCreateTime" />
+    <result column="server_update_time" jdbcType="TIMESTAMP" property="serverUpdateTime" />
+    <result column="delete_flag" jdbcType="TINYINT" property="deleteFlag" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, brand_identy, shop_identy, voice_announce_num, pick_up_meal_place, notify_type, 
+    expire_auto_pick_up_enable, expire_auto_pick_up_seconds, server_create_time, server_update_time, 
+    delete_flag
+  </sql>
+  <select id="selectByExample" parameterType="com.zjg.dao.model.PickUpCallSettingDOExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from pick_up_call_setting
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from pick_up_call_setting
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from pick_up_call_setting
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.zjg.dao.model.PickUpCallSettingDOExample">
+    delete from pick_up_call_setting
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.zjg.dao.model.PickUpCallSettingDO">
+    insert into pick_up_call_setting (id, brand_identy, shop_identy, 
+      voice_announce_num, pick_up_meal_place, notify_type, 
+      expire_auto_pick_up_enable, expire_auto_pick_up_seconds, 
+      server_create_time, server_update_time, 
+      delete_flag)
+    values (#{id,jdbcType=BIGINT}, #{brandIdenty,jdbcType=BIGINT}, #{shopIdenty,jdbcType=BIGINT}, 
+      #{voiceAnnounceNum,jdbcType=INTEGER}, #{pickUpMealPlace,jdbcType=INTEGER}, #{notifyType,jdbcType=VARCHAR}, 
+      #{expireAutoPickUpEnable,jdbcType=TINYINT}, #{expireAutoPickUpSeconds,jdbcType=BIGINT}, 
+      #{serverCreateTime,jdbcType=TIMESTAMP}, #{serverUpdateTime,jdbcType=TIMESTAMP}, 
+      #{deleteFlag,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.zjg.dao.model.PickUpCallSettingDO">
+    insert into pick_up_call_setting
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="brandIdenty != null">
+        brand_identy,
+      </if>
+      <if test="shopIdenty != null">
+        shop_identy,
+      </if>
+      <if test="voiceAnnounceNum != null">
+        voice_announce_num,
+      </if>
+      <if test="pickUpMealPlace != null">
+        pick_up_meal_place,
+      </if>
+      <if test="notifyType != null">
+        notify_type,
+      </if>
+      <if test="expireAutoPickUpEnable != null">
+        expire_auto_pick_up_enable,
+      </if>
+      <if test="expireAutoPickUpSeconds != null">
+        expire_auto_pick_up_seconds,
+      </if>
+      <if test="serverCreateTime != null">
+        server_create_time,
+      </if>
+      <if test="serverUpdateTime != null">
+        server_update_time,
+      </if>
+      <if test="deleteFlag != null">
+        delete_flag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="brandIdenty != null">
+        #{brandIdenty,jdbcType=BIGINT},
+      </if>
+      <if test="shopIdenty != null">
+        #{shopIdenty,jdbcType=BIGINT},
+      </if>
+      <if test="voiceAnnounceNum != null">
+        #{voiceAnnounceNum,jdbcType=INTEGER},
+      </if>
+      <if test="pickUpMealPlace != null">
+        #{pickUpMealPlace,jdbcType=INTEGER},
+      </if>
+      <if test="notifyType != null">
+        #{notifyType,jdbcType=VARCHAR},
+      </if>
+      <if test="expireAutoPickUpEnable != null">
+        #{expireAutoPickUpEnable,jdbcType=TINYINT},
+      </if>
+      <if test="expireAutoPickUpSeconds != null">
+        #{expireAutoPickUpSeconds,jdbcType=BIGINT},
+      </if>
+      <if test="serverCreateTime != null">
+        #{serverCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="serverUpdateTime != null">
+        #{serverUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteFlag != null">
+        #{deleteFlag,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.zjg.dao.model.PickUpCallSettingDOExample" resultType="java.lang.Long">
+    select count(*) from pick_up_call_setting
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update pick_up_call_setting
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.brandIdenty != null">
+        brand_identy = #{record.brandIdenty,jdbcType=BIGINT},
+      </if>
+      <if test="record.shopIdenty != null">
+        shop_identy = #{record.shopIdenty,jdbcType=BIGINT},
+      </if>
+      <if test="record.voiceAnnounceNum != null">
+        voice_announce_num = #{record.voiceAnnounceNum,jdbcType=INTEGER},
+      </if>
+      <if test="record.pickUpMealPlace != null">
+        pick_up_meal_place = #{record.pickUpMealPlace,jdbcType=INTEGER},
+      </if>
+      <if test="record.notifyType != null">
+        notify_type = #{record.notifyType,jdbcType=VARCHAR},
+      </if>
+      <if test="record.expireAutoPickUpEnable != null">
+        expire_auto_pick_up_enable = #{record.expireAutoPickUpEnable,jdbcType=TINYINT},
+      </if>
+      <if test="record.expireAutoPickUpSeconds != null">
+        expire_auto_pick_up_seconds = #{record.expireAutoPickUpSeconds,jdbcType=BIGINT},
+      </if>
+      <if test="record.serverCreateTime != null">
+        server_create_time = #{record.serverCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.serverUpdateTime != null">
+        server_update_time = #{record.serverUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.deleteFlag != null">
+        delete_flag = #{record.deleteFlag,jdbcType=TINYINT},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update pick_up_call_setting
+    set id = #{record.id,jdbcType=BIGINT},
+      brand_identy = #{record.brandIdenty,jdbcType=BIGINT},
+      shop_identy = #{record.shopIdenty,jdbcType=BIGINT},
+      voice_announce_num = #{record.voiceAnnounceNum,jdbcType=INTEGER},
+      pick_up_meal_place = #{record.pickUpMealPlace,jdbcType=INTEGER},
+      notify_type = #{record.notifyType,jdbcType=VARCHAR},
+      expire_auto_pick_up_enable = #{record.expireAutoPickUpEnable,jdbcType=TINYINT},
+      expire_auto_pick_up_seconds = #{record.expireAutoPickUpSeconds,jdbcType=BIGINT},
+      server_create_time = #{record.serverCreateTime,jdbcType=TIMESTAMP},
+      server_update_time = #{record.serverUpdateTime,jdbcType=TIMESTAMP},
+      delete_flag = #{record.deleteFlag,jdbcType=TINYINT}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.zjg.dao.model.PickUpCallSettingDO">
+    update pick_up_call_setting
+    <set>
+      <if test="brandIdenty != null">
+        brand_identy = #{brandIdenty,jdbcType=BIGINT},
+      </if>
+      <if test="shopIdenty != null">
+        shop_identy = #{shopIdenty,jdbcType=BIGINT},
+      </if>
+      <if test="voiceAnnounceNum != null">
+        voice_announce_num = #{voiceAnnounceNum,jdbcType=INTEGER},
+      </if>
+      <if test="pickUpMealPlace != null">
+        pick_up_meal_place = #{pickUpMealPlace,jdbcType=INTEGER},
+      </if>
+      <if test="notifyType != null">
+        notify_type = #{notifyType,jdbcType=VARCHAR},
+      </if>
+      <if test="expireAutoPickUpEnable != null">
+        expire_auto_pick_up_enable = #{expireAutoPickUpEnable,jdbcType=TINYINT},
+      </if>
+      <if test="expireAutoPickUpSeconds != null">
+        expire_auto_pick_up_seconds = #{expireAutoPickUpSeconds,jdbcType=BIGINT},
+      </if>
+      <if test="serverCreateTime != null">
+        server_create_time = #{serverCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="serverUpdateTime != null">
+        server_update_time = #{serverUpdateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="deleteFlag != null">
+        delete_flag = #{deleteFlag,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.zjg.dao.model.PickUpCallSettingDO">
+    update pick_up_call_setting
+    set brand_identy = #{brandIdenty,jdbcType=BIGINT},
+      shop_identy = #{shopIdenty,jdbcType=BIGINT},
+      voice_announce_num = #{voiceAnnounceNum,jdbcType=INTEGER},
+      pick_up_meal_place = #{pickUpMealPlace,jdbcType=INTEGER},
+      notify_type = #{notifyType,jdbcType=VARCHAR},
+      expire_auto_pick_up_enable = #{expireAutoPickUpEnable,jdbcType=TINYINT},
+      expire_auto_pick_up_seconds = #{expireAutoPickUpSeconds,jdbcType=BIGINT},
+      server_create_time = #{serverCreateTime,jdbcType=TIMESTAMP},
+      server_update_time = #{serverUpdateTime,jdbcType=TIMESTAMP},
+      delete_flag = #{deleteFlag,jdbcType=TINYINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
