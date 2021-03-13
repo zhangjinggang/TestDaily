@@ -3,6 +3,8 @@ package com.zjg.test.service.impl;
 import com.zjg.test.service.DynamicTestService;
 import com.zjg.test.service.DynamicTransactionTestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,7 +23,7 @@ public class DynamicTransactionTestServiceImpl implements DynamicTransactionTest
     @Transactional(rollbackFor = Exception.class)
     public void async() {
 //        dynamicTestService.insertUser();
+        System.out.println(Thread.currentThread().getId()+":"+Thread.currentThread().getName());
         dynamicTestService.insertPickup();
-
     }
 }

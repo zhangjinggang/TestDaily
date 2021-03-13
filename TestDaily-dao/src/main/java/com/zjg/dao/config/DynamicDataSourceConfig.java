@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;
@@ -64,6 +65,14 @@ public class DynamicDataSourceConfig {
     public SqlSessionTemplate activitySqlSessionTemplate(
         @Qualifier("sqlSessionFactory") SqlSessionFactory sqlSessionFactory) throws Exception {
         return new SqlSessionTemplate(sqlSessionFactory);
+    }
+
+    @Bean(name = "transactionManager")
+    public DataSourceTransactionManager transactionManager(
+            @Qualifier("dynamicDataSource") DataSource dynamicDataSource) throws Exception {
+        DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
+        transactionManager.setDataSource(dynamicDataSource);
+        return transactionManager;
     }
 
 

@@ -19,13 +19,13 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-        <version>2.1.6.RELEASE</version>
+        <version>2.2.9.RELEASE</version>
         <relativePath/>
     </parent>
 
     <properties>
         <test-daily.version>1.0-SNAPSHOT</test-daily.version>
-        <spring-boot.version>2.2.5.RELEASE</spring-boot.version>
+        <spring-boot.version>2.2.9.RELEASE</spring-boot.version>
     </properties>
 
 

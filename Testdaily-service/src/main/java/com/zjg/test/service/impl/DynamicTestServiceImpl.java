@@ -7,7 +7,10 @@ import com.zjg.dao.model.PickUpCallSettingDO;
 import com.zjg.dao.model.UserDO;
 import com.zjg.test.service.DynamicTestService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author zjg
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
  * @date 2021/2/20 15:50
  */
 @Service
+@EnableAsync
 public class DynamicTestServiceImpl implements DynamicTestService {
 
     @Autowired
@@ -33,12 +37,15 @@ public class DynamicTestServiceImpl implements DynamicTestService {
     }
 
     @Override
-//    @DataSource("oneDataSource")
+    @DataSource("oneDataSource")
+    @Async
     public void insertPickup() {
         PickUpCallSettingDO record = new PickUpCallSettingDO();
         record.setId(124321L);
         record.setBrandIdenty(1L);
         pickUpCallSettingDAO.insertSelective(record);
+        System.out.println(Thread.currentThread().getId()+":"+Thread.currentThread().getName());
+        int i = 1/0;
     }
 
 
