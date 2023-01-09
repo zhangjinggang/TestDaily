@@ -15,6 +15,7 @@ public class TwoDataSourceConfig {
     /**
      * 加载数据源
      */
+
 //
 //    @Bean(name = "twoDatasourceProperties")
 //    @ConfigurationProperties("spring.datasource.two")
